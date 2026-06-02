@@ -20,10 +20,10 @@
     background: #0d1b2a;
     border-bottom: 2px solid #F0A500;
     padding: 10px 16px;
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
     gap: 12px;
-    flex-wrap: wrap;
   }
   .header img {
     height: 40px;
@@ -31,11 +31,16 @@
     object-fit: contain;
     flex-shrink: 0;
   }
+  /* spacer fantasma que equilibra el logo en la derecha */
+  .header-spacer {
+    width: 40px;   /* igual al ancho aprox del logo */
+  }
   .header-text {
     display: flex;
     flex-direction: column;
-    min-width: 0;   /* permite que el texto haga truncado si es necesario */
-    flex: 1;
+    align-items: center;
+    text-align: center;
+    min-width: 0;
   }
   .header-title {
     font-size: clamp(10px, 2.5vw, 13px);
@@ -293,6 +298,7 @@
     <div class="header-title">Análisis de la Información y la Opinión Pública</div>
     <div class="header-sub">Semana 6 · Estrategias de Comunicación en la Era Digital</div>
   </div>
+  <div class="header-spacer"></div>
 </div>
 
 <div class="content">
