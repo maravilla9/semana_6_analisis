@@ -1,0 +1,379 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .wrap {
+    font-family: 'Segoe UI', sans-serif;
+    background: #0d1b2a;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HEADER */
+  .header {
+    background: #0d1b2a;
+    border-bottom: 2px solid #F0A500;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .header img { height: 48px; object-fit: contain; }
+  .header-text { display: flex; flex-direction: column; }
+  .header-title { font-size: 13px; font-weight: 600; color: #F0A500; letter-spacing: 0.5px; text-transform: uppercase; }
+  .header-sub { font-size: 11px; color: #8faabe; margin-top: 2px; }
+
+  /* MAIN CONTENT */
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+  }
+
+  /* SCORE STRIP */
+  .score-strip {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 520px;
+  }
+  .score-pill {
+    flex: 1;
+    background: #152233;
+    border-radius: 50px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #1e3048;
+  }
+  .score-pill .lbl { font-size: 12px; color: #8faabe; }
+  .score-pill .val { font-size: 18px; font-weight: 700; }
+  .score-pill.correct .val { color: #4ade80; }
+  .score-pill.wrong .val { color: #f87171; }
+  .score-pill.progress .val { font-size: 13px; color: #F0A500; }
+
+  /* QUESTION CARD */
+  .q-card {
+    width: 100%;
+    max-width: 520px;
+    background: linear-gradient(135deg, #152233 0%, #1a2d42 100%);
+    border: 1px solid #2a4060;
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .q-card::before {
+    content: '?';
+    position: absolute;
+    font-size: 120px;
+    font-weight: 900;
+    color: #ffffff08;
+    right: -10px;
+    top: -20px;
+    line-height: 1;
+  }
+  .q-text {
+    font-size: 16px;
+    color: #e2eaf3;
+    line-height: 1.6;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* BUTTONS */
+  .btn-row {
+    display: flex;
+    gap: 14px;
+    width: 100%;
+    max-width: 520px;
+    margin-bottom: 16px;
+  }
+  .btn-tf {
+    flex: 1;
+    padding: 16px;
+    border-radius: 16px;
+    border: 2px solid transparent;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+  }
+  .btn-tf:active { transform: scale(0.97); }
+  #btn-true {
+    background: #0f3d2e;
+    color: #4ade80;
+    border-color: #166534;
+  }
+  #btn-true:hover { background: #166534; }
+  #btn-false {
+    background: #3d0f0f;
+    color: #f87171;
+    border-color: #7f1d1d;
+  }
+  #btn-false:hover { background: #7f1d1d; }
+  .btn-tf.correct { background: #166534 !important; border-color: #4ade80 !important; color: #ffffff !important; }
+  .btn-tf.wrong   { background: #7f1d1d !important; border-color: #f87171 !important; color: #ffffff !important; }
+  .btn-tf.dim     { opacity: 0.35; pointer-events: none; }
+
+  /* FEEDBACK */
+  .feedback {
+    width: 100%;
+    max-width: 520px;
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    margin-bottom: 14px;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct { background: #0f3d2e; color: #86efac; border: 1px solid #166534; }
+  .feedback.wrong   { background: #3d0f0f; color: #fca5a5; border: 1px solid #7f1d1d; }
+
+  /* NEXT BUTTON */
+  .btn-next {
+    width: 100%;
+    max-width: 520px;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    background: #F0A500;
+    color: #0d1b2a;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: none;
+    transition: background 0.2s;
+  }
+  .btn-next:hover { background: #e09500; }
+  .btn-next.show { display: block; }
+
+  /* PROGRESS BAR */
+  .prog-bar-wrap {
+    width: 100%;
+    max-width: 520px;
+    height: 5px;
+    background: #1e3048;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .prog-bar-fill {
+    height: 100%;
+    background: #F0A500;
+    border-radius: 50px;
+    transition: width 0.4s ease;
+  }
+
+  /* RESULT SCREEN */
+  .result-screen {
+    width: 100%;
+    max-width: 520px;
+    background: #152233;
+    border: 1px solid #2a4060;
+    border-radius: 24px;
+    padding: 40px 28px;
+    text-align: center;
+    display: none;
+  }
+  .result-screen.show { display: block; }
+  .result-emoji { font-size: 56px; margin-bottom: 12px; }
+  .result-big { font-size: 52px; font-weight: 900; color: #F0A500; line-height: 1; }
+  .result-of  { font-size: 14px; color: #8faabe; margin-bottom: 8px; }
+  .result-msg { font-size: 16px; color: #e2eaf3; margin: 16px 0 24px; line-height: 1.5; }
+  .result-breakdown {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .rb-pill {
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .rb-pill.c { background: #0f3d2e; color: #4ade80; }
+  .rb-pill.w { background: #3d0f0f; color: #f87171; }
+  .btn-restart {
+    padding: 14px 36px;
+    border-radius: 14px;
+    border: none;
+    background: #F0A500;
+    color: #0d1b2a;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .btn-restart:hover { background: #e09500; }
+
+  /* FOOTER */
+  .footer {
+    background: #0a1520;
+    border-top: 1px solid #1e3048;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #8faabe;
+  }
+  .footer strong { color: #F0A500; }
+
+  @media (max-width: 480px) {
+    .q-text { font-size: 14px; }
+    .btn-tf { font-size: 14px; padding: 13px; }
+    .result-big { font-size: 42px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="header">
+    <img src="https://i.postimg.cc/FKz4sz2C/logoutelsinfondo.png" alt="Logo UTEL">
+    <div class="header-text">
+      <div class="header-title">Análisis de la Información y la Opinión Pública</div>
+      <div class="header-sub">Semana 6 · Estrategias de Comunicación en la Era Digital</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div id="game-section">
+      <div class="score-strip">
+        <div class="score-pill correct"><span class="lbl">Correctas</span><span class="val" id="cnt-correct">0</span></div>
+        <div class="score-pill progress"><span class="lbl">Pregunta</span><span class="val" id="cnt-prog">1/8</span></div>
+        <div class="score-pill wrong"><span class="lbl">Incorrectas</span><span class="val" id="cnt-wrong">0</span></div>
+      </div>
+
+      <div class="prog-bar-wrap"><div class="prog-bar-fill" id="prog-fill" style="width:0%"></div></div>
+
+      <div class="q-card"><p class="q-text" id="q-text"></p></div>
+
+      <div class="btn-row">
+        <button class="btn-tf" id="btn-true" onclick="respond(true)">✔ Verdadero</button>
+        <button class="btn-tf" id="btn-false" onclick="respond(false)">✘ Falso</button>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+      <button class="btn-next" id="btn-next" onclick="nextQ()">Siguiente →</button>
+    </div>
+
+    <div class="result-screen" id="result-screen">
+      <div class="result-emoji" id="res-emoji"></div>
+      <div class="result-big" id="res-score"></div>
+      <div class="result-of">de 8 respuestas correctas</div>
+      <div class="result-msg" id="res-msg"></div>
+      <div class="result-breakdown">
+        <div class="rb-pill c" id="rb-c"></div>
+        <div class="rb-pill w" id="rb-w"></div>
+      </div>
+      <button class="btn-restart" onclick="restart()">↺ Jugar de nuevo</button>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <strong>Dr. Armando Sandoval Maravilla</strong> · Análisis de la Información y la Opinión Pública
+  </div>
+
+</div>
+
+<script>
+const QS = [
+  { q: "Los medios de comunicación y las TIC conforman hoy un único sistema global de mayor cobertura.", a: true,  e: "Correcto. Ambos convergen en un ecosistema más complejo con alcance global." },
+  { q: "La prospectiva define acciones concretas con recursos para alcanzar un objetivo.", a: false, e: "Falso. Eso describe la estrategia. La prospectiva anticipa escenarios posibles." },
+  { q: "La estrategia y la prospectiva se complementan mutuamente en la toma de decisiones.", a: true,  e: "Correcto. La prospectiva anticipa escenarios y la estrategia define cómo actuar en ellos." },
+  { q: "El análisis morfológico estudia el mensaje como un todo sin dividirlo en partes.", a: false, e: "Falso. Precisamente descompone el mensaje en sus unidades mínimas para analizar cada una." },
+  { q: "Los profesionales en comunicación deben formarse continuamente para adaptarse al mundo globalizado.", a: true,  e: "Correcto. La formación continua es una exigencia del entorno mediático actual." },
+  { q: "En la prospectiva, el analista interviene directamente para que los eventos ocurran.", a: false, e: "Falso. En la prospectiva las fuerzas del entorno ejercen la influencia; el analista solo anticipa." },
+  { q: "El crecimiento de los podcasts de pago es una tendencia actual de los medios de comunicación.", a: true,  e: "Correcto. Es una de las cinco apuestas actuales junto con la IA y el contenido audiovisual." },
+  { q: "La morfología puede apoyarse en sintaxis, semántica y semiótica para mensajes más complejos.", a: true,  e: "Correcto. Para mensajes complejos, estas disciplinas amplían y profundizan el análisis." },
+];
+
+let order=[], cur=0, corr=0, wrng=0, answered=false;
+
+function shuffle(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; }
+
+function restart(){
+  order=shuffle(QS); cur=0; corr=0; wrng=0; answered=false;
+  document.getElementById('cnt-correct').textContent=0;
+  document.getElementById('cnt-wrong').textContent=0;
+  document.getElementById('result-screen').classList.remove('show');
+  document.getElementById('game-section').style.display='';
+  loadQ();
+}
+
+function loadQ(){
+  answered=false;
+  const q=order[cur];
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('cnt-prog').textContent=(cur+1)+'/'+order.length;
+  document.getElementById('prog-fill').style.width=(cur/order.length*100)+'%';
+  const fb=document.getElementById('feedback');
+  fb.className='feedback'; fb.textContent='';
+  document.getElementById('btn-next').className='btn-next';
+  const bt=document.getElementById('btn-true'), bf=document.getElementById('btn-false');
+  bt.className='btn-tf'; bf.className='btn-tf';
+}
+
+function respond(val){
+  if(answered) return;
+  answered=true;
+  const q=order[cur];
+  const ok=val===q.a;
+  const bt=document.getElementById('btn-true'), bf=document.getElementById('btn-false');
+  const fb=document.getElementById('feedback');
+
+  if(ok){ corr++; document.getElementById('cnt-correct').textContent=corr; fb.className='feedback show correct'; fb.textContent='✓ '+q.e; }
+  else  { wrng++; document.getElementById('cnt-wrong').textContent=wrng;   fb.className='feedback show wrong';   fb.textContent='✗ '+q.e; }
+
+  if(val===true)  bt.className='btn-tf '+(ok?'correct':'wrong');
+  else            bf.className='btn-tf '+(ok?'correct':'wrong');
+  if(val===true)  bf.className+=' dim'; else bt.className+=' dim';
+  if(!ok){ if(q.a===true) bt.className='btn-tf correct'; else bf.className='btn-tf correct'; }
+
+  if(cur+1<order.length) document.getElementById('btn-next').className='btn-next show';
+  else setTimeout(showResult,1000);
+}
+
+function nextQ(){ cur++; loadQ(); }
+
+function showResult(){
+  document.getElementById('prog-fill').style.width='100%';
+  document.getElementById('game-section').style.display='none';
+  const rs=document.getElementById('result-screen');
+  rs.classList.add('show');
+  document.getElementById('res-score').textContent=corr;
+  document.getElementById('rb-c').textContent='✔ '+corr+' correctas';
+  document.getElementById('rb-w').textContent='✘ '+wrng+' incorrectas';
+  const data=[
+    {e:'😟', m:'No te rindas, repasa el material y vuelve a intentarlo.'},
+    {e:'🤔', m:'Vas por buen camino, algunos conceptos aún necesitan repaso.'},
+    {e:'😊', m:'Buen trabajo, ya tienes un manejo sólido del tema.'},
+    {e:'🏆', m:'¡Excelente! Dominaste completamente la Semana 6.'},
+  ];
+  const d=corr<=2?data[0]:corr<=4?data[1]:corr<=6?data[2]:data[3];
+  document.getElementById('res-emoji').textContent=d.e;
+  document.getElementById('res-msg').textContent=d.m;
+}
+
+restart();
+</script>
