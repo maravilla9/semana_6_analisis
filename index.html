@@ -25,28 +25,24 @@
   .header {
     background: #0d1b2a;
     border-bottom: 2px solid #F0A500;
-    padding: 10px 16px;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    padding: 8px 16px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 3px;
   }
   .header img {
-    height: 40px;
+    height: 34px;
     width: auto;
     object-fit: contain;
-    flex-shrink: 0;
   }
-  /* spacer fantasma que equilibra el logo en la derecha */
-  .header-spacer {
-    width: 40px;   /* igual al ancho aprox del logo */
-  }
+  .header-spacer { display: none; }
   .header-text {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    min-width: 0;
+    width: 100%;
   }
   .header-title {
     font-size: clamp(10px, 2.5vw, 13px);
@@ -54,14 +50,12 @@
     color: #F0A500;
     letter-spacing: 0.4px;
     text-transform: uppercase;
-    white-space: normal;
     line-height: 1.3;
   }
   .header-sub {
     font-size: clamp(9px, 2vw, 11px);
     color: #8faabe;
-    margin-top: 2px;
-    white-space: normal;
+    margin-top: 1px;
     line-height: 1.3;
   }
 
