@@ -3,350 +3,323 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>Verdadero o Falso – Semana 6</title>
+  <title>Relacionar Columnas – Semana 5</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *{box-sizing:border-box;margin:0;padding:0;}
 
-  html {
-    height: 100%;
-    overflow: hidden;
+  html,body{
+    height:100%;
+    font-family:'Inter',sans-serif;
+    background:#080f18;
+    color:#e2eaf3;
   }
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #0d1b2a;
-    height: 100dvh;
-    max-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  /* ── HEADER ── */
-  .header {
-    background: #0d1b2a;
-    border-bottom: 2px solid #F0A500;
-    padding: 8px 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-  }
-  .header img {
-    height: 34px;
-    width: auto;
-    object-fit: contain;
-  }
-  .header-spacer { display: none; }
-  .header-text {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-  }
-  .header-title {
-    font-size: clamp(10px, 2.5vw, 13px);
-    font-weight: 600;
-    color: #F0A500;
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-    line-height: 1.3;
-  }
-  .header-sub {
-    font-size: clamp(9px, 2vw, 11px);
-    color: #8faabe;
-    margin-top: 1px;
-    line-height: 1.3;
+  body{
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    overflow-x:hidden;
   }
 
-  /* ── MAIN ── */
-  .content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: clamp(10px, 2.5vw, 20px) clamp(12px, 4vw, 20px);
-    overflow: hidden;
+  /* HEADER */
+  .header{
+    background:#0b141f;
+    border-bottom:2px solid #F0A500;
+    padding:10px 20px 12px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    flex-shrink:0;
+  }
+  .header img{height:32px;object-fit:contain;}
+  .header-title{
+    font-family:'Syne',sans-serif;
+    font-size:clamp(11px,2.4vw,14px);
+    font-weight:800;
+    color:#F0A500;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    text-align:center;
+  }
+  .header-sub{font-size:clamp(9px,1.8vw,11px);color:#4a6a88;text-align:center;letter-spacing:.3px;}
+
+  /* CONTENT */
+  .content{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:clamp(14px,3vw,28px) clamp(14px,3vw,24px) clamp(10px,2vw,20px);
+    gap:clamp(10px,2vw,16px);
   }
 
-  #game-section {
-    width: 100%;
-    max-width: 520px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+  /* SCORE */
+  .score-strip{display:flex;gap:10px;width:100%;max-width:700px;}
+  .s-pill{
+    flex:1;background:#0d1b2a;border-radius:14px;
+    padding:8px 10px;display:flex;flex-direction:column;
+    align-items:center;gap:1px;
+    border-top:3px solid transparent;
+  }
+  .s-pill.hits{border-color:#4ade80;}
+  .s-pill.pts {border-color:#F0A500;}
+  .s-pill.miss{border-color:#f87171;}
+  .s-pill .lbl{font-size:clamp(8px,1.8vw,10px);color:#4a6a88;text-transform:uppercase;letter-spacing:.5px;}
+  @media(max-width:360px){
+    .s-pill .val{font-size:16px;}
+    .s-pill .lbl{font-size:8px;}
+    .s-pill{padding:6px 6px;}
+  }
+  .s-pill .val{font-family:'Syne',sans-serif;font-size:clamp(17px,4vw,24px);font-weight:800;}
+  .s-pill.hits .val{color:#4ade80;}
+  .s-pill.pts  .val{color:#F0A500;}
+  .s-pill.miss .val{color:#f87171;}
+
+  /* INSTRUCCION */
+  .tip{font-size:clamp(11px,2.2vw,13px);color:#4a6a88;text-align:center;}
+  .tip b{color:#F0A500;}
+
+  /* GRID */
+  .columns{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:clamp(8px,2vw,18px);
+    width:100%;max-width:700px;
+    align-items:start;
+  }
+  /* En móvil: columna única — conceptos arriba, definiciones abajo */
+  @media(max-width:540px){
+    .columns{
+      grid-template-columns:1fr;
+    }
+    /* En móvil los conceptos se muestran en fila horizontal scrollable */
+    #concepts{
+      display:flex;
+      flex-direction:row;
+      gap:8px;
+      overflow-x:auto;
+      padding-bottom:6px;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+    }
+    #concepts::-webkit-scrollbar{display:none;}
+    .c-card{
+      min-width:110px;
+      flex-shrink:0;
+      margin-bottom:0;
+    }
+    .c-visual{height:52px;}
+    .col-head{text-align:left;}
   }
 
-  /* ── SCORE STRIP ── */
-  .score-strip {
-    display: flex;
-    gap: 8px;
-    margin-bottom: clamp(8px, 2vw, 16px);
-    width: 100%;
-  }
-  .score-pill {
-    flex: 1;
-    background: #152233;
-    border-radius: 50px;
-    padding: clamp(6px, 2vw, 9px) clamp(8px, 3vw, 14px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #1e3048;
-    gap: 2px;
-    min-width: 0;
-  }
-  .score-pill .lbl {
-    font-size: clamp(9px, 2.2vw, 12px);
-    color: #8faabe;
-    white-space: nowrap;
-  }
-  .score-pill .val {
-    font-size: clamp(16px, 4.5vw, 20px);
-    font-weight: 700;
-    line-height: 1;
-  }
-  .score-pill.correct .val { color: #4ade80; }
-  .score-pill.wrong   .val { color: #f87171; }
-  .score-pill.progress .val {
-    font-size: clamp(11px, 3vw, 14px);
-    color: #F0A500;
+  .col-head{
+    font-family:'Syne',sans-serif;
+    font-size:clamp(9px,1.8vw,11px);font-weight:700;
+    color:#4a6a88;text-transform:uppercase;letter-spacing:1px;
+    text-align:center;margin-bottom:8px;
   }
 
-  /* ── PROGRESS BAR ── */
-  .prog-bar-wrap {
-    width: 100%;
-    height: 5px;
-    background: #1e3048;
-    border-radius: 50px;
-    margin-bottom: clamp(8px, 2vw, 16px);
-    overflow: hidden;
+  /* CONCEPT CARDS */
+  .c-card{
+    border-radius:18px;
+    border:2px solid #1a2d42;
+    overflow:hidden;
+    cursor:pointer;
+    margin-bottom:8px;
+    transition:border-color .2s,box-shadow .2s,transform .15s;
+    background:#0d1b2a;
+    position:relative;
   }
-  .prog-bar-fill {
-    height: 100%;
-    background: #F0A500;
-    border-radius: 50px;
-    transition: width 0.4s ease;
+  .c-card:last-child{margin-bottom:0;}
+  .c-card:hover:not(.ok):not(.err){
+    border-color:#F0A500;
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(240,165,0,.18);
   }
+  .c-card.sel{
+    border-color:#F0A500;
+    box-shadow:0 0 0 3px rgba(240,165,0,.22);
+    transform:translateY(-2px);
+  }
+  .c-card.ok{border-color:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.15);pointer-events:none;}
+  .c-card.err{border-color:#f87171;animation:shake .38s ease;}
 
-  /* ── QUESTION CARD ── */
-  .q-card {
-    width: 100%;
-    background: linear-gradient(135deg, #152233 0%, #1a2d42 100%);
-    border: 1px solid #2a4060;
-    border-radius: 20px;
-    padding: clamp(20px, 5vw, 32px) clamp(16px, 4vw, 24px);
-    text-align: center;
-    margin-bottom: clamp(10px, 2vw, 16px);
-    min-height: clamp(100px, 20vw, 140px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
+  /* imagen decorativa dentro de la card — SVG inline por tema */
+  .c-visual{
+    height:clamp(52px,9vw,78px);
+    display:flex;align-items:center;justify-content:center;
+    font-size:clamp(28px,6vw,46px);
+    position:relative;overflow:hidden;
   }
-  .q-card::before {
-    content: '?';
-    position: absolute;
-    font-size: clamp(80px, 18vw, 120px);
-    font-weight: 900;
-    color: #ffffff08;
-    right: -6px;
-    top: -16px;
-    line-height: 1;
-    pointer-events: none;
-  }
-  .q-text {
-    font-size: clamp(13px, 3.5vw, 16px);
-    color: #e2eaf3;
-    line-height: 1.6;
-    font-weight: 500;
-    position: relative;
-    z-index: 1;
-  }
+  /* gradiente de fondo único por forma de gobierno */
+  .c-card[data-idx="0"] .c-visual{background:linear-gradient(135deg,#1a1430,#2d1f5e);}
+  .c-card[data-idx="1"] .c-visual{background:linear-gradient(135deg,#0f2a1a,#1a4d2e);}
+  .c-card[data-idx="2"] .c-visual{background:linear-gradient(135deg,#2a0f0f,#4d1a1a);}
+  .c-card[data-idx="3"] .c-visual{background:linear-gradient(135deg,#1a1400,#3d2e00);}
+  .c-card[data-idx="4"] .c-visual{background:linear-gradient(135deg,#0f1e2a,#1a3a4d);}
 
-  /* ── TRUE / FALSE BUTTONS ── */
-  .btn-row {
-    display: flex;
-    gap: 12px;
-    width: 100%;
-    margin-bottom: clamp(8px, 2vw, 14px);
-    flex-wrap: wrap;  /* colapsa en pantallas muy estrechas */
-  }
-  .btn-tf {
-    flex: 1;
-    min-width: 120px;   /* mínimo para que el texto no se parta raro */
-    padding: clamp(12px, 3.5vw, 16px) clamp(10px, 3vw, 16px);
-    border-radius: 16px;
-    border: 2px solid transparent;
-    font-size: clamp(13px, 3.8vw, 16px);
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform 0.1s, background 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    letter-spacing: 0.4px;
-  }
-  .btn-tf:active { transform: scale(0.97); }
-  #btn-true  { background: #0f3d2e; color: #4ade80; border-color: #166534; }
-  #btn-true:hover  { background: #166534; }
-  #btn-false { background: #3d0f0f; color: #f87171; border-color: #7f1d1d; }
-  #btn-false:hover { background: #7f1d1d; }
-  .btn-tf.correct { background: #166534 !important; border-color: #4ade80 !important; color: #fff !important; }
-  .btn-tf.wrong   { background: #7f1d1d !important; border-color: #f87171 !important; color: #fff !important; }
-  .btn-tf.dim     { opacity: 0.35; pointer-events: none; }
+  /* texto en la visual — SVG decorativo */
+  .c-visual svg{opacity:.55;transition:opacity .2s;}
+  .c-card:hover .c-visual svg,.c-card.sel .c-visual svg{opacity:.85;}
+  .c-card.ok .c-visual svg{opacity:.4;}
 
-  /* ── FEEDBACK ── */
-  .feedback {
-    width: 100%;
-    border-radius: 14px;
-    padding: 13px 16px;
-    font-size: clamp(12px, 3.2vw, 13.5px);
-    line-height: 1.5;
-    margin-bottom: clamp(8px, 2vw, 12px);
-    display: none;
+  .c-footer{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:clamp(7px,1.5vw,10px) clamp(10px,2vw,14px);
+    gap:8px;
   }
-  .feedback.show    { display: block; }
-  .feedback.correct { background: #0f3d2e; color: #86efac; border: 1px solid #166534; }
-  .feedback.wrong   { background: #3d0f0f; color: #fca5a5; border: 1px solid #7f1d1d; }
+  .c-name{
+    font-family:'Syne',sans-serif;
+    font-size:clamp(11px,2.4vw,14px);font-weight:700;
+    color:#e2eaf3;transition:color .2s;
+  }
+  .c-card.sel  .c-name{color:#F0A500;}
+  .c-card.ok   .c-name{color:#4ade80;}
+  .c-card.err  .c-name{color:#f87171;}
+  .c-dot{
+    width:7px;height:7px;border-radius:50%;
+    background:#1a2d42;flex-shrink:0;transition:background .2s;
+  }
+  .c-card.sel .c-dot{background:#F0A500;}
+  .c-card.ok  .c-dot{background:#4ade80;}
 
-  /* ── NEXT BUTTON ── */
-  .btn-next {
-    width: 100%;
-    padding: clamp(12px, 3.5vw, 14px);
-    border-radius: 14px;
-    border: none;
-    background: #F0A500;
-    color: #0d1b2a;
-    font-size: clamp(13px, 3.5vw, 15px);
-    font-weight: 700;
-    cursor: pointer;
-    display: none;
-    transition: background 0.2s;
+  /* DEFINITION CARDS */
+  .d-card{
+    border-radius:16px;
+    border:2px solid #1a2d42;
+    padding:clamp(10px,2vw,14px) clamp(12px,2.5vw,16px) clamp(10px,2vw,14px) clamp(14px,3vw,18px);
+    margin-bottom:8px;cursor:pointer;
+    background:#0d1b2a;
+    transition:border-color .2s,transform .15s,box-shadow .2s;
+    position:relative;
+    min-height:clamp(56px,10vw,80px);
+    display:flex;flex-direction:column;justify-content:center;gap:4px;
   }
-  .btn-next:hover { background: #e09500; }
-  .btn-next.show  { display: block; }
+  .d-card:last-child{margin-bottom:0;}
+  /* barra lateral izquierda */
+  .d-card::before{
+    content:'';position:absolute;left:0;top:12px;bottom:12px;
+    width:3px;border-radius:2px;background:#1a2d42;transition:background .2s;
+  }
+  .d-card:hover:not(.ok):not(.err):not(.used){
+    border-color:#F0A500;
+    transform:translateX(3px);
+    box-shadow:-3px 0 14px rgba(240,165,0,.12);
+  }
+  .d-card:hover::before{background:#F0A500;}
+  .d-card.ok{border-color:#4ade80;background:#091a10;pointer-events:none;}
+  .d-card.ok::before{background:#4ade80;}
+  .d-card.err{border-color:#f87171;background:#1a0909;animation:shake .38s ease;}
+  .d-card.err::before{background:#f87171;}
+  .d-card.used{opacity:.22;pointer-events:none;}
 
-  /* ── RESULT SCREEN ── */
-  .result-screen {
-    width: 100%;
-    max-width: 520px;
-    background: #152233;
-    border: 1px solid #2a4060;
-    border-radius: 24px;
-    padding: clamp(24px, 6vw, 40px) clamp(16px, 5vw, 28px);
-    text-align: center;
-    display: none;
-  }
-  .result-screen.show { display: block; }
-  .result-emoji { font-size: clamp(40px, 12vw, 56px); margin-bottom: 10px; }
-  .result-big   { font-size: clamp(40px, 13vw, 52px); font-weight: 900; color: #F0A500; line-height: 1; }
-  .result-of    { font-size: clamp(12px, 3vw, 14px); color: #8faabe; margin-bottom: 8px; }
-  .result-msg   { font-size: clamp(13px, 3.5vw, 16px); color: #e2eaf3; margin: 14px 0 20px; line-height: 1.5; }
+  .d-text{font-size:clamp(10px,2.1vw,12px);color:#b8c8d8;line-height:1.45;}
+  .d-ex{font-size:clamp(9px,1.8vw,11px);color:#F0A500;font-style:italic;opacity:.85;}
+  .d-card.ok .d-text{color:#86efac;}
+  .d-card.ok .d-ex{color:#4ade80;}
 
-  .result-breakdown {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 22px;
-    flex-wrap: wrap;
+  /* FEEDBACK */
+  .fb{
+    width:100%;max-width:700px;border-radius:14px;
+    padding:11px 16px;font-size:clamp(11px,2.2vw,13px);
+    line-height:1.5;display:none;text-align:center;
+    border:1px solid transparent;
   }
-  .rb-pill {
-    padding: 7px clamp(12px, 4vw, 20px);
-    border-radius: 50px;
-    font-size: clamp(12px, 3.2vw, 14px);
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  .rb-pill.c { background: #0f3d2e; color: #4ade80; }
-  .rb-pill.w { background: #3d0f0f; color: #f87171; }
+  .fb.show{display:block;}
+  .fb.ok  {background:#091a10;color:#86efac;border-color:#166534;}
+  .fb.err {background:#1a0909;color:#fca5a5;border-color:#7f1d1d;}
+  .fb.hint{background:#1a1400;color:#fde68a;border-color:#854d0e;}
 
-  .btn-restart {
-    padding: clamp(12px, 3.5vw, 14px) clamp(24px, 7vw, 36px);
-    border-radius: 14px;
-    border: none;
-    background: #F0A500;
-    color: #0d1b2a;
-    font-size: clamp(13px, 3.5vw, 15px);
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s;
+  /* RESULT */
+  .result{
+    width:100%;max-width:460px;
+    background:#0d1b2a;border:1px solid #1a2d42;border-radius:28px;
+    padding:clamp(28px,6vw,44px) clamp(20px,5vw,32px);
+    text-align:center;display:none;margin:auto;
   }
-  .btn-restart:hover { background: #e09500; }
+  .result.show{display:block;}
+  .r-emoji{font-size:clamp(44px,11vw,60px);margin-bottom:10px;}
+  .r-big{font-family:'Syne',sans-serif;font-size:clamp(52px,13vw,68px);font-weight:800;color:#F0A500;line-height:1;}
+  .r-of{font-size:clamp(11px,2.3vw,13px);color:#4a6a88;margin-bottom:4px;}
+  .r-msg{font-size:clamp(13px,2.8vw,15px);color:#c8d8e8;margin:14px 0 20px;line-height:1.6;}
+  .r-row{display:flex;gap:10px;justify-content:center;margin-bottom:22px;flex-wrap:wrap;}
+  .r-pill{padding:7px 18px;border-radius:50px;font-size:clamp(11px,2.4vw,13px);font-weight:600;}
+  .r-pill.c{background:#091a10;color:#4ade80;border:1px solid #166534;}
+  .r-pill.w{background:#1a0909;color:#f87171;border:1px solid #7f1d1d;}
+  .btn-r{
+    padding:12px 32px;border-radius:14px;border:none;
+    background:#F0A500;color:#080f18;
+    font-family:'Syne',sans-serif;font-size:clamp(13px,2.8vw,15px);font-weight:700;
+    cursor:pointer;transition:background .2s,transform .1s;letter-spacing:.5px;
+  }
+  .btn-r:hover{background:#e09500;transform:translateY(-1px);}
 
-  /* ── FOOTER ── */
-  .footer {
-    background: #0a1520;
-    border-top: 1px solid #1e3048;
-    padding: 10px 16px;
-    text-align: center;
-    font-size: clamp(10px, 2.5vw, 12px);
-    color: #8faabe;
-    line-height: 1.5;
+  /* FOOTER */
+  .footer{
+    background:#060c13;border-top:1px solid #1a2d42;
+    padding:9px 20px;text-align:center;
+    font-size:clamp(10px,2vw,12px);color:#4a6a88;flex-shrink:0;
   }
-  .footer strong { color: #F0A500; }
+  .footer strong{color:#F0A500;}
+
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    25%{transform:translateX(-5px);}
+    50%{transform:translateX(5px);}
+    75%{transform:translateX(-4px);}
+  }
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(10px);}
+    to  {opacity:1;transform:translateY(0);}
+  }
+  .c-card,.d-card{animation:fadeUp .3s ease both;}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <img src="https://i.postimg.cc/FKz4sz2C/logoutelsinfondo.png" alt="Logo UTEL">
-  <div class="header-text">
-    <div class="header-title">Análisis de la Información y la Opinión Pública</div>
-    <div class="header-sub">Semana 6 · Estrategias de Comunicación en la Era Digital</div>
-  </div>
-  <div class="header-spacer"></div>
+  <img src="https://i.postimg.cc/FKz4sz2C/logoutelsinfondo.png" alt="UTEL">
+  <div class="header-title">Análisis de la Información y la Opinión Pública</div>
+  <div class="header-sub">Semana 5 · Poder Político</div>
 </div>
 
 <div class="content">
 
-  <div id="game-section">
+  <div id="game" style="width:100%;max-width:700px;display:flex;flex-direction:column;gap:clamp(10px,2vw,14px);align-items:center;">
+
     <div class="score-strip">
-      <div class="score-pill correct">
-        <span class="lbl">Correctas</span>
-        <span class="val" id="cnt-correct">0</span>
+      <div class="s-pill hits"><span class="lbl">Correctas</span><span class="val" id="c-hits">0</span></div>
+      <div class="s-pill pts" ><span class="lbl">Progreso</span><span class="val" id="c-pts">0/5</span></div>
+      <div class="s-pill miss"><span class="lbl">Incorrectas</span><span class="val" id="c-miss">0</span></div>
+    </div>
+
+    <p class="tip">Selecciona una <b>Forma de Gobierno</b> y luego su definición correcta</p>
+
+    <div class="columns">
+      <div>
+        <div class="col-head">⬡ Forma de Gobierno</div>
+        <div id="concepts"></div>
       </div>
-      <div class="score-pill progress">
-        <span class="lbl">Pregunta</span>
-        <span class="val" id="cnt-prog">1/8</span>
-      </div>
-      <div class="score-pill wrong">
-        <span class="lbl">Incorrectas</span>
-        <span class="val" id="cnt-wrong">0</span>
+      <div>
+        <div class="col-head">☰ Definición</div>
+        <div id="defs"></div>
       </div>
     </div>
 
-    <div class="prog-bar-wrap">
-      <div class="prog-bar-fill" id="prog-fill" style="width:0%"></div>
-    </div>
-
-    <div class="q-card">
-      <p class="q-text" id="q-text"></p>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn-tf" id="btn-true"  onclick="respond(true)">✔ Verdadero</button>
-      <button class="btn-tf" id="btn-false" onclick="respond(false)">✘ Falso</button>
-    </div>
-
-    <div class="feedback" id="feedback"></div>
-    <button class="btn-next" id="btn-next" onclick="nextQ()">Siguiente →</button>
+    <div class="fb" id="fb"></div>
   </div>
 
-  <div class="result-screen" id="result-screen">
-    <div class="result-emoji" id="res-emoji"></div>
-    <div class="result-big"   id="res-score"></div>
-    <div class="result-of">de 8 respuestas correctas</div>
-    <div class="result-msg"   id="res-msg"></div>
-    <div class="result-breakdown">
-      <div class="rb-pill c" id="rb-c"></div>
-      <div class="rb-pill w" id="rb-w"></div>
+  <div class="result" id="result">
+    <div class="r-emoji" id="r-emoji"></div>
+    <div class="r-big"   id="r-score"></div>
+    <div class="r-of">de 5 pares correctos</div>
+    <div class="r-msg"   id="r-msg"></div>
+    <div class="r-row">
+      <div class="r-pill c" id="r-c"></div>
+      <div class="r-pill w" id="r-w"></div>
     </div>
-    <button class="btn-restart" onclick="restart()">↺ Jugar de nuevo</button>
+    <button class="btn-r" onclick="restart()">↺ Jugar de nuevo</button>
   </div>
 
 </div>
@@ -356,84 +329,151 @@
 </div>
 
 <script>
-const QS = [
-  { q: "Los medios de comunicación y las TIC conforman hoy un único sistema global de mayor cobertura.", a: true,  e: "Correcto. Ambos convergen en un ecosistema más complejo con alcance global." },
-  { q: "La prospectiva define acciones concretas con recursos para alcanzar un objetivo.", a: false, e: "Falso. Eso describe la estrategia. La prospectiva anticipa escenarios posibles." },
-  { q: "La estrategia y la prospectiva se complementan mutuamente en la toma de decisiones.", a: true,  e: "Correcto. La prospectiva anticipa escenarios y la estrategia define cómo actuar en ellos." },
-  { q: "El análisis morfológico estudia el mensaje como un todo sin dividirlo en partes.", a: false, e: "Falso. Precisamente descompone el mensaje en sus unidades mínimas para analizar cada una." },
-  { q: "Los profesionales en comunicación deben formarse continuamente para adaptarse al mundo globalizado.", a: true,  e: "Correcto. La formación continua es una exigencia del entorno mediático actual." },
-  { q: "En la prospectiva, el analista interviene directamente para que los eventos ocurran.", a: false, e: "Falso. En la prospectiva las fuerzas del entorno ejercen la influencia; el analista solo anticipa." },
-  { q: "El crecimiento de los podcasts de pago es una tendencia actual de los medios de comunicación.", a: true,  e: "Correcto. Es una de las cinco apuestas actuales junto con la IA y el contenido audiovisual." },
-  { q: "La morfología puede apoyarse en sintaxis, semántica y semiótica para mensajes más complejos.", a: true,  e: "Correcto. Para mensajes complejos, estas disciplinas amplían y profundizan el análisis." },
+/* SVG ilustraciones para cada forma de gobierno */
+const ICONS = [
+  /* Monarquía – corona */
+  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 44 L16 22 L32 34 L48 22 L54 44 Z" stroke="#c084fc" stroke-width="2.5" fill="rgba(192,132,252,.15)" stroke-linejoin="round"/>
+    <circle cx="16" cy="22" r="4" fill="#c084fc" opacity=".8"/>
+    <circle cx="32" cy="16" r="4" fill="#c084fc" opacity=".8"/>
+    <circle cx="48" cy="22" r="4" fill="#c084fc" opacity=".8"/>
+    <rect x="10" y="44" width="44" height="5" rx="2.5" fill="#c084fc" opacity=".6"/>
+  </svg>`,
+  /* República – urna/voto */
+  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="14" y="28" width="36" height="26" rx="4" stroke="#4ade80" stroke-width="2.5" fill="rgba(74,222,128,.1)"/>
+    <rect x="20" y="22" width="24" height="8" rx="3" stroke="#4ade80" stroke-width="2" fill="rgba(74,222,128,.15)"/>
+    <path d="M29 16 L35 16 L32 22 Z" fill="#4ade80" opacity=".7"/>
+    <path d="M27 38 L32 43 L40 34" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`,
+  /* Dictadura – puño */
+  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="20" y="28" width="24" height="20" rx="5" stroke="#f87171" stroke-width="2.5" fill="rgba(248,113,113,.12)"/>
+    <rect x="22" y="20" width="6"  height="12" rx="3" stroke="#f87171" stroke-width="2" fill="rgba(248,113,113,.12)"/>
+    <rect x="29" y="18" width="6"  height="13" rx="3" stroke="#f87171" stroke-width="2" fill="rgba(248,113,113,.12)"/>
+    <rect x="36" y="20" width="6"  height="12" rx="3" stroke="#f87171" stroke-width="2" fill="rgba(248,113,113,.12)"/>
+    <path d="M20 36 L14 34 L14 38 L20 40" stroke="#f87171" stroke-width="2" fill="none"/>
+  </svg>`,
+  /* Aristocracia – columna/templo */
+  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="12" y="48" width="40" height="4" rx="2" fill="#fbbf24" opacity=".7"/>
+    <rect x="16" y="16" width="32" height="4" rx="2" fill="#fbbf24" opacity=".7"/>
+    <rect x="20" y="20" width="4"  height="28" rx="2" fill="#fbbf24" opacity=".55"/>
+    <rect x="30" y="20" width="4"  height="28" rx="2" fill="#fbbf24" opacity=".55"/>
+    <rect x="40" y="20" width="4"  height="28" rx="2" fill="#fbbf24" opacity=".55"/>
+    <polygon points="16,16 32,8 48,16" fill="#fbbf24" opacity=".4"/>
+  </svg>`,
+  /* Democracia – personas/comunidad */
+  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="32" cy="20" r="6"  stroke="#60a5fa" stroke-width="2.5" fill="rgba(96,165,250,.15)"/>
+    <circle cx="16" cy="38" r="5"  stroke="#60a5fa" stroke-width="2"   fill="rgba(96,165,250,.1)"/>
+    <circle cx="48" cy="38" r="5"  stroke="#60a5fa" stroke-width="2"   fill="rgba(96,165,250,.1)"/>
+    <path d="M22 44 Q16 44 14 52 L20 52" stroke="#60a5fa" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M42 44 Q48 44 50 52 L44 52" stroke="#60a5fa" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M26 28 Q20 28 18 36 L46 36 Q44 28 38 28 Q36 26 32 26 Q28 26 26 28Z" stroke="#60a5fa" stroke-width="2" fill="rgba(96,165,250,.1)"/>
+  </svg>`,
 ];
 
-let order=[], cur=0, corr=0, wrng=0, answered=false;
+const PAIRS = [
+  { concept:"Monarquía",   icon:0, def:"El poder se hereda. Gobierna un rey o una reina como jefe del Estado.",                                        ex:"Ej: El Reino de España" },
+  { concept:"República",   icon:1, def:"El poder no se hereda. El jefe de Estado es elegido por la población o sus representantes.",                   ex:"Ej: México" },
+  { concept:"Dictadura",   icon:2, def:"El poder se concentra en una sola persona o grupo. No hay elecciones libres.",                                 ex:"Ej: Corea del Norte, Cuba" },
+  { concept:"Aristocracia",icon:3, def:"El poder está en manos de un grupo reducido basado en nobleza, élites o privilegios sociales.",                ex:"Ej: La Venecia medieval" },
+  { concept:"Democracia",  icon:4, def:"El poder reside en el pueblo. Los gobernantes son elegidos mediante elecciones libres.",                       ex:"Ej: Canadá, Alemania" },
+];
 
-function shuffle(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; }
+let sel=null, hits=0, miss=0;
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 
 function restart(){
-  order=shuffle(QS); cur=0; corr=0; wrng=0; answered=false;
-  document.getElementById('cnt-correct').textContent=0;
-  document.getElementById('cnt-wrong').textContent=0;
-  document.getElementById('result-screen').classList.remove('show');
-  document.getElementById('game-section').style.display='';
-  loadQ();
+  sel=null;hits=0;miss=0;
+  ['c-hits','c-miss'].forEach(id=>document.getElementById(id).textContent=0);
+  document.getElementById('c-pts').textContent='0/5';
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('game').style.display='';
+  hideFb();render();
 }
 
-function loadQ(){
-  answered=false;
-  const q=order[cur];
-  document.getElementById('q-text').textContent=q.q;
-  document.getElementById('cnt-prog').textContent=(cur+1)+'/'+order.length;
-  document.getElementById('prog-fill').style.width=(cur/order.length*100)+'%';
-  const fb=document.getElementById('feedback');
-  fb.className='feedback'; fb.textContent='';
-  document.getElementById('btn-next').className='btn-next';
-  document.getElementById('btn-true').className='btn-tf';
-  document.getElementById('btn-false').className='btn-tf';
+function render(){
+  const sd=shuffle(PAIRS.map((p,i)=>({...p,idx:i})));
+
+  const cEl=document.getElementById('concepts');
+  cEl.innerHTML='';
+  PAIRS.forEach((p,i)=>{
+    const d=document.createElement('div');
+    d.className='c-card';d.dataset.idx=i;
+    d.style.animationDelay=(i*.06)+'s';
+    d.innerHTML=`<div class="c-visual">${ICONS[p.icon]}</div>
+      <div class="c-footer"><span class="c-name">${p.concept}</span><span class="c-dot"></span></div>`;
+    d.onclick=()=>pickConcept(i);
+    cEl.appendChild(d);
+  });
+
+  const dEl=document.getElementById('defs');
+  dEl.innerHTML='';
+  sd.forEach((p,si)=>{
+    const d=document.createElement('div');
+    d.className='d-card';d.dataset.idx=p.idx;
+    d.style.animationDelay=(si*.06)+'s';
+    d.innerHTML=`<span class="d-text">${p.def}</span><span class="d-ex">${p.ex}</span>`;
+    d.onclick=()=>pickDef(p.idx,d);
+    dEl.appendChild(d);
+  });
 }
 
-function respond(val){
-  if(answered) return;
-  answered=true;
-  const q=order[cur];
-  const ok=val===q.a;
-  const bt=document.getElementById('btn-true'), bf=document.getElementById('btn-false');
-  const fb=document.getElementById('feedback');
-
-  if(ok){ corr++; document.getElementById('cnt-correct').textContent=corr; fb.className='feedback show correct'; fb.textContent='✓ '+q.e; }
-  else  { wrng++; document.getElementById('cnt-wrong').textContent=wrng;   fb.className='feedback show wrong';   fb.textContent='✗ '+q.e; }
-
-  if(val===true)  bt.className='btn-tf '+(ok?'correct':'wrong');
-  else            bf.className='btn-tf '+(ok?'correct':'wrong');
-  if(val===true)  bf.className+=' dim'; else bt.className+=' dim';
-  if(!ok){ if(q.a===true) bt.className='btn-tf correct'; else bf.className='btn-tf correct'; }
-
-  if(cur+1<order.length) document.getElementById('btn-next').className='btn-next show';
-  else setTimeout(showResult,1000);
+function pickConcept(idx){
+  const cards=document.querySelectorAll('.c-card');
+  if(cards[idx].classList.contains('ok'))return;
+  cards.forEach(c=>{if(!c.classList.contains('ok'))c.classList.remove('sel');});
+  cards[idx].classList.add('sel');
+  sel=idx;hideFb();
 }
 
-function nextQ(){ cur++; loadQ(); }
+function pickDef(idx,el){
+  if(sel===null){showFb('👆 Primero selecciona una Forma de Gobierno a la izquierda.','hint');return;}
+  if(el.classList.contains('ok'))return;
+  const cc=document.querySelectorAll('.c-card');
+  if(sel===idx){
+    hits++;
+    document.getElementById('c-hits').textContent=hits;
+    document.getElementById('c-pts').textContent=hits+'/5';
+    cc[sel].classList.remove('sel');cc[sel].classList.add('ok');
+    el.classList.add('ok');
+    showFb('✓ ¡Correcto! '+PAIRS[idx].concept+': '+PAIRS[idx].def,'ok');
+    sel=null;
+    if(hits===PAIRS.length)setTimeout(showResult,900);
+  }else{
+    miss++;
+    document.getElementById('c-miss').textContent=miss;
+    cc[sel].classList.remove('sel');cc[sel].classList.add('err');
+    el.classList.add('err');
+    showFb('✗ Incorrecto. '+PAIRS[sel].concept+' no corresponde a esa definición. Inténtalo de nuevo.','err');
+    const s=sel;
+    setTimeout(()=>{cc[s].classList.remove('err','sel');el.classList.remove('err');},1200);
+    sel=null;
+  }
+}
+
+function showFb(msg,type){const f=document.getElementById('fb');f.textContent=msg;f.className='fb show '+type;}
+function hideFb(){document.getElementById('fb').className='fb';}
 
 function showResult(){
-  document.getElementById('prog-fill').style.width='100%';
-  document.getElementById('game-section').style.display='none';
-  const rs=document.getElementById('result-screen');
-  rs.classList.add('show');
-  document.getElementById('res-score').textContent=corr;
-  document.getElementById('rb-c').textContent='✔ '+corr+' correctas';
-  document.getElementById('rb-w').textContent='✘ '+wrng+' incorrectas';
-  const data=[
-    {e:'😟', m:'No te rindas, repasa el material y vuelve a intentarlo.'},
-    {e:'🤔', m:'Vas por buen camino, algunos conceptos aún necesitan repaso.'},
-    {e:'😊', m:'Buen trabajo, ya tienes un manejo sólido del tema.'},
-    {e:'🏆', m:'¡Excelente! Dominaste completamente la Semana 6.'},
+  document.getElementById('game').style.display='none';
+  document.getElementById('result').classList.add('show');
+  document.getElementById('r-score').textContent=hits;
+  document.getElementById('r-c').textContent='✔ '+hits+' correctas';
+  document.getElementById('r-w').textContent='✘ '+miss+' incorrectas';
+  const d=[
+    {e:'😟',m:'No te rindas, repasa las formas de gobierno e inténtalo de nuevo.'},
+    {e:'🤔',m:'Vas bien, algunos conceptos aún necesitan repaso.'},
+    {e:'😊',m:'Buen trabajo, ya tienes un manejo sólido del tema.'},
+    {e:'🏆',m:'¡Excelente! Dominaste completamente las Formas de Gobierno.'},
   ];
-  const d=corr<=2?data[0]:corr<=4?data[1]:corr<=6?data[2]:data[3];
-  document.getElementById('res-emoji').textContent=d.e;
-  document.getElementById('res-msg').textContent=d.m;
+  const r=hits<=1?d[0]:hits<=3?d[1]:hits<=4?d[2]:d[3];
+  document.getElementById('r-emoji').textContent=r.e;
+  document.getElementById('r-msg').textContent=r.m;
 }
-
 restart();
 </script>
 </body>
